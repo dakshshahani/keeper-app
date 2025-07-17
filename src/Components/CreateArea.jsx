@@ -11,6 +11,8 @@ function CreateArea(props) {
         content : ""
     })
 
+    const [isExpanded, setIsExpanded] = React.useState(false);
+
     function handleChange(event) {
         const {name, value} = event.target;
         setNote(prevNote => {
@@ -31,14 +33,21 @@ function CreateArea(props) {
         })
 
     }
-
+    
+    function expand() {
+        setIsExpanded(true);
+    }
     
   return (
     <div>
       <form className="create-note">
-        <input name="title" value = {note.title} placeholder="Title" onChange = {handleChange}  />
-        <textarea name="content" placeholder="Take a note..." onChange = {handleChange} value = {note.content} rows="3" />
-        <button onClick = {handleSubmit} >Add</button>
+       {isExpanded ? <input name="title" value = {note.title} placeholder="Title" onChange = {handleChange}  /> : null}
+        <textarea onClick = {expand} name="content" placeholder="Take a note..." onChange = {handleChange} value = {note.content} rows= {isExpanded ? "3" : "1"} />
+        <Zoom in={isExpanded}>
+        <Fab onClick = {handleSubmit} >
+            <AddIcon />
+        </Fab>
+        </Zoom>
       </form>
     </div>
   );
